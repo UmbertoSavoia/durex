@@ -39,8 +39,11 @@ typedef	struct	s_deamon
 {
 	int 		sockfd;
 	t_client	clients[MAX_CLIENTS];
+	char 		connected_clients;
 	fd_set		fd_write;
 	fd_set		fd_read;
 }				t_deamon;
+
+void 	server_loop(t_deamon *durex);
 
 #endif
