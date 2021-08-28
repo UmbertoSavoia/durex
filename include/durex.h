@@ -6,7 +6,13 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/mman.h>
+#include <netinet/in.h>
+#include <netinet/ip.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #define RED "\033[31m"
 #define GREEN "\033[32m"

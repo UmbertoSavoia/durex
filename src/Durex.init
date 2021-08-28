@@ -1,0 +1,56 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:				Durex
+# Required-Start:		$remote_fs $syslog
+# Required-Stop:		$remote_fs $syslog
+# Default-Start:		2 3 4 5
+# Default-Stop:
+# Short-Description: 	Durex usavoia
+# Description:			Durex usavoia
+### END INIT INFO
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+PIDFILE=/var/run/Durex.pid
+DAEMON=/bin/Durex
+NAME=Durex
+SCRIPT=/etc/init.d/Durex
+
+test -f $DAEMON || exit 0
+
+. /lib/lsb/init-functions
+
+case "$1" in
+start)					log_daemon_msg "Start" "Durex"
+						#start_daemon -p $PIDFILE $DAEMON
+						/bin/Durex &
+						echo $! > $PIDFILE
+						log_end_msg $?
+            			;;
+stop)					log_daemon_msg "Stop" "Durex "
+						kill `pidof $NAME`
+        				RETVAL=$?
+        				rm -f /var/run/Durex.pid
+        				log_end_msg $RETVAL
+        				;;
+restart)				log_daemon_msg "Restart" "Durex"
+        				$0 stop
+        				$0 start
+        				;;
+reload|force-reload)	log_daemon_msg "Restart" "Durex"
+						$0 restart
+						log_end_msg 0
+						;;
+status)
+						if [ -e $PIDFILE ]; then
+							log_success_msg "${NAME} is running"
+							exit 0
+						else
+							log_failure_msg "${NAME} is not running"
+							exit $?
+						fi
+        				;;
+*)						log_action_msg "Usage: /etc/init.d/Durex {start|stop|status|restart|reload|force-reload}"
+				        exit 2
+        				;;
+esac
+exit 0
