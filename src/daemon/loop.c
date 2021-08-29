@@ -23,8 +23,8 @@ void	add_client(t_deamon *durex)
 			if (durex->clients[i].fd == -1)
 			{
 				durex->clients[i].fd = new_fd;
-				send(durex->clients[i].fd, "\n> ", 3, 0);
 				durex->connected_clients++;
+				send(durex->clients[i].fd, "\nKey: ", 6, 0);
 				break ;
 			}
 		}
@@ -85,7 +85,12 @@ void 	server_loop(t_deamon *durex, char **env)
 				if (ret == 0)
 					remove_client(durex, i);
 				else if (ret > 0)
-					msg_from_client(durex, i, env);
+				{
+					if (durex->clients[i].auth == true)
+						msg_from_client(durex, i, env);
+					else
+						cmd_key(durex, i);
+				}
 			}
 			durex->io_data += ret;
 		}

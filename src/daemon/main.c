@@ -26,7 +26,6 @@ char 	init(t_deamon *durex)
 
 int 	main(int ac, char **av, char **env)
 {
-	//daemon(0, 0);
 	(void)ac;
 	(void)av;
 	t_deamon durex = {0};
