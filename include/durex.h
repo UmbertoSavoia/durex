@@ -8,6 +8,7 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <sys/mman.h>
+#include <sys/wait.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
 #include <stdbool.h>
@@ -16,6 +17,7 @@
 
 #define RED "\033[31m"
 #define GREEN "\033[32m"
+#define BOLD "\033[1m"
 #define NC "\033[0m"
 
 #define USERNAME "usavoia"
@@ -31,19 +33,27 @@ typedef	struct	s_client
 {
 	bool	auth;
 	int 	fd;
+	char 	log[MAX_BUFF];
 	char 	read_buffer[MAX_BUFF];
 	char 	write_buffer[MAX_BUFF];
 }				t_client;
 
 typedef	struct	s_deamon
 {
-	int 		sockfd;
-	t_client	clients[MAX_CLIENTS];
-	char 		connected_clients;
-	fd_set		fd_write;
-	fd_set		fd_read;
+	int 			sockfd;
+	t_client		clients[MAX_CLIENTS];
+	char 			connected_clients;
+	fd_set			fd_write;
+	fd_set			fd_read;
+	unsigned long	io_data;
 }				t_deamon;
 
-void 	server_loop(t_deamon *durex);
+void 	server_loop(t_deamon *durex, char **env);
+
+void 	msg_to_client(t_deamon *durex);
+void 	cmd_help(t_deamon *durex, int index);
+void 	cmd_shell(t_deamon *durex, int index, char **env);
+void 	cmd_io(t_deamon *durex, int index);
+void 	cmd_log(t_deamon *durex, int index);
 
 #endif

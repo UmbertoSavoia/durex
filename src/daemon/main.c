@@ -17,16 +17,21 @@ char 	init(t_deamon *durex)
 		return 1;
 
 	for (int i = 0; i < MAX_CLIENTS; ++i)
+	{
 		durex->clients[i].fd = -1;
+		durex->clients[i].auth = false;
+	}
 	return 0;
 }
 
-int 	main(void)
+int 	main(int ac, char **av, char **env)
 {
 	//daemon(0, 0);
+	(void)ac;
+	(void)av;
 	t_deamon durex = {0};
 
 	if (init(&durex))
 		return 1;
-	server_loop(&durex);
+	server_loop(&durex, env);
 }
