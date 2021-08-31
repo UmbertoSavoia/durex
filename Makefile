@@ -19,6 +19,10 @@ $(TARGET) : $(OBJS)
 
 $(DAEMON) : $(OBJS_DAEMON)
 	$(CC) $(CFLAGS) $^ -o $(addprefix $(PATH_DEAMON), $(DAEMON))
+	make -C src/packer/woody_woodpacker
+	mv src/daemon/durex_daemon src/packer/woody_woodpacker
+	cd src/packer/woody_woodpacker && ./woody_woodpacker durex_daemon
+	mv src/packer/woody_woodpacker/woody src/daemon/durex_daemon
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -26,9 +30,11 @@ $(DAEMON) : $(OBJS_DAEMON)
 clean:
 	$(RM) $(OBJS)
 	$(RM) $(OBJS_DAEMON)
+	make clean -C src/packer/woody_woodpacker
 
 fclean: clean
 	$(RM) $(TARGET) $(addprefix $(PATH_DEAMON), $(DAEMON))
+	make fclean -C src/packer/woody_woodpacker
 
 cleanall: fclean
 	$(RM) /etc/init.d/Durex /bin/Durex /var/run/Durex.pid
